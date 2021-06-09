@@ -1,0 +1,44 @@
+.scheduler-flex-box {
+    justify-content: center;
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.cards-flex-box {
+    display: flex; 
+    justify-content: center;
+}
+
+.card-dimension {
+    width: 400px;
+    height: 400px;
+}
+
+.card-image {
+    width: 26rem;
+}
+
+.card-text {
+    font-size: 20px;
+}
+
+.input-flex-box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.inputs-header {
+    width: 100%;
+    font-size: 27px;
+}
+
+.inputs-margin {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.error-header {
+    color: red; 
+    text-align: center;
+}
