@@ -1,30 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 
 import { addOrder } from "../redux/actions/ordersActions";
-import "./Scheduler.css";
 
-class Scheduler extends React.PureComponent {
-  state = {
-    address: "",
-    email: "",
-    name: "",
-    lastName: "",
-    error:
-      "You need to enter your first name, last name, phone number, address and email to order a service.",
-    formError: false,
-    phoneNumber: "",
-  };
-  routeToRoot = () => {
-    const { history } = this.props;
+function Scheduler(props) {
+  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [error, setError] = useState(
+    "You need to enter your first name, last name, phone number, address and email to order a suit."
+  );
+  const [formError, setFormError] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const orderType = useSelector((state) => state.ordersReducer.orderType);
+  const { text, image, title, price } = orderType;
+  const { history } = props;
+
+  const dispatch = useDispatch();
+
+  const routeToRoot = () => {
     history.push("/");
   };
-  confirmOrder = () => {
-    const { history, addOrdr } = this.props;
-    const { title } = this.props.orderType;
+  const confirmOrder = () => {
     const date = new Date();
-    const { name, lastName, phoneNumber, email, address } = this.state;
+
     if (
       name.length === 0 ||
       lastName.length === 0 ||
@@ -32,138 +33,112 @@ class Scheduler extends React.PureComponent {
       email.length === 0 ||
       address.length === 0
     ) {
-      return this.setState({
-        formError: true,
-      });
+      return setFormError(true);
     }
-    addOrdr({
-      name,
-      lastName,
-      id: Math.floor(100000 + Math.random() * 900000),
-      time: date.toString(),
-      type: title,
-      phoneNumber,
-      email,
-      address,
-    });
+    dispatch(
+      addOrder({
+        name,
+        lastName,
+        id: Math.floor(100000 + Math.random() * 900000),
+        time: date.toString(),
+        type: title,
+        phoneNumber,
+        email,
+        address,
+      })
+    );
     history.push("/confirmation-order");
   };
 
-  setValue = (e) => {
+  const setValue = (e) => {
     const { name, value } = e.target;
 
-    this.setState({
-      [name]: value,
-      formError: false,
-    });
+    if (name === "name") {
+      setName(value);
+      return setError(false);
+    }
+    if (name === "lastName") {
+      setLastName(value);
+      return setError(false);
+    }
+    if (name === "phoneNumber") {
+      setPhoneNumber(value);
+      return setError(false);
+    }
+    if (name === "address") {
+      setAddress(value);
+      return setError(false);
+    }
+    if (name === "email") {
+      setEmail(value);
+      return setError;
+    }
   };
-  render() {
-    const { text, image, title } = this.props.orderType;
-    const {
-      address,
-      email,
-      name,
-      lastName,
-      error,
-      formError,
-      phoneNumber,
-    } = this.state;
 
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col">
-            <h2>Order your service</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col scheduler-flex-box">
-            <button
-              className="btn btn-danger"
-              type="button"
-              onClick={this.routeToRoot}
-            >
-              Click to order a different service
-            </button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div className="Cards cards-flex-box">
-              <div className="Card card-dimension" onClick={this.confirmOrder}>
-                <img src={image} alt={title} className="card-image" />
-                <h3>{title}</h3>
-                <h3 className="card-text">{text}</h3>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="input-flex-box ">
-              <h3 className="inputs-header">
-                Enter your first name, last name, phone number, address, and
-                email.
-              </h3>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your name"
-                className="inputs-margin"
-                onChange={this.setValue}
-                value={name}
-              />
-              <input
-                type="text"
-                name="lastName"
-                placeholder="Enter your last name"
-                className="inputs-margin"
-                onChange={this.setValue}
-                value={lastName}
-              />
-              <input
-                type="tel"
-                name="phoneNumber"
-                placeholder="Enter your phone number"
-                className="inputs-margin"
-                onChange={this.setValue}
-                value={phoneNumber}
-              />
-              <input
-                type="text"
-                name="address"
-                placeholder="Enter your address"
-                className="inputs-margin"
-                onChange={this.setValue}
-                value={address}
-              />
-              <input
-                type="text"
-                name="email"
-                placeholder="Enter your email"
-                className="inputs-margin"
-                onChange={this.setValue}
-                value={email}
-              />
-              {formError ? <p className="error-header">{error}</p> : null}
-            </div>
-          </div>
+  return (
+    <div>
+      <h2>Order your suit</h2>
+      <div className="flexbox-one">
+        <button className="btn-danger" type="button" onClick={routeToRoot}>
+          Click to order a different suit
+        </button>
+      </div>
+      <div className="flexbox-two">
+        <div className="Card card-display" onClick={confirmOrder}>
+          <img src={image} alt={title} className="card-display-width" />
+          <h3>{title}</h3>
+          <h3>{price}</h3>
+          <h3 className="font-display-image">{text}</h3>
         </div>
       </div>
-    );
-  }
+      <div className="flexbox-three">
+        <h3 className="order-suit-h3">
+          Enter your first name, last name, phone number, address, and email.
+        </h3>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+          className="input-style"
+          onChange={setValue}
+          value={name}
+        />
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Enter your last name"
+          className="input-style"
+          onChange={setValue}
+          value={lastName}
+        />
+        <input
+          type="tel"
+          name="phoneNumber"
+          placeholder="Enter your phone number"
+          className="input-style"
+          onChange={setValue}
+          value={phoneNumber}
+        />
+        <input
+          type="text"
+          name="address"
+          placeholder="Enter your address"
+          className="input-style"
+          onChange={setValue}
+          value={address}
+        />
+        <input
+          type="text"
+          name="email"
+          placeholder="Enter your email"
+          className="input-style"
+          onChange={setValue}
+          value={email}
+        />
+        {formError ? <p className="error-message-order-suit">{error}</p> : null}
+      </div>
+    </div>
+  );
 }
 
-function mapStateToProps(state) {
-  return {
-    orderType: state.ordersReducer.orderType,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    addOrdr: (order) => dispatch(addOrder(order)),
-  };
-}
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Scheduler)
-);
+export default withRouter(Scheduler);

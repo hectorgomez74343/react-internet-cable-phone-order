@@ -9,7 +9,7 @@ const INTIAL_STATE = {
       name: "Nicholas",
       lastName: "Tesla",
       time: date.toString(),
-      type: "Cable and Internet",
+      type: "$10 Cable and Internet",
       phoneNumber: "202-000-3949",
       address: "232 A St Austin Texas 29292",
       email: "nickolas@gmail.com",
@@ -20,14 +20,8 @@ const INTIAL_STATE = {
 function ordersReducer(state = INTIAL_STATE, action) {
   switch (action.type) {
     case ADD_ORDER_TYPE:
-      const {
-        text,
-        image,
-        title,
-        phoneNumber,
-        email,
-        address,
-      } = action.payload;
+      const { text, image, title, phoneNumber, email, address } =
+        action.payload;
 
       return {
         ...state,
