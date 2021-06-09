@@ -17,7 +17,7 @@ class IndexPage extends React.PureComponent {
         <div className="row">
           <div className="col">
             <div className="Cards">
-              <h2>Ocean Side Internet Cable Phone Company</h2>
+              <h2>Internet, Phone, Cable Company</h2>
               <h4 className="phone-number"> (760)-455-4701</h4>
               <div className="CardGroup">
                 <Card
