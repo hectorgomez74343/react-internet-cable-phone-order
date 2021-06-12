@@ -5,7 +5,6 @@ import IndexPage from "./components/IndexPage";
 import Scheduler from "./components/Scheduler";
 import ConfirmationPage from "./components/ConfirmationPage";
 import Orders from "./components/Orders";
-import Error from "./components/Error";
 
 class App extends React.PureComponent {
   render() {
@@ -19,7 +18,6 @@ class App extends React.PureComponent {
           render={() => <ConfirmationPage />}
         />
         <Route exact path="/orders" render={() => <Orders />} />
-        <Route exact path="/error" render={() => <Error />} />
       </Switch>
     );
   }

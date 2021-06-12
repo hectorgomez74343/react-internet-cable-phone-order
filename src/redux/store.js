@@ -1,9 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import reduxThunk from "redux-thunk";
-import { createBrowserHistory } from "history";
 import ordersReducer from "./reducers/ordersReducer";
-
-export const history = createBrowserHistory();
 
 const reducers = combineReducers({
   ordersReducer,
