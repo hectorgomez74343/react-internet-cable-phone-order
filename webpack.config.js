@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -12,6 +13,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.html"),
     }),
+    new webpack.EnvironmentPlugin([
+      "NODE_ENV",
+      "REACT_APP_GET_ORDERS",
+      "REACT_APP_CREATE_ORDER",
+      "REACT_APP_DELETE_ORDER",
+    ]),
   ],
   module: {
     rules: [

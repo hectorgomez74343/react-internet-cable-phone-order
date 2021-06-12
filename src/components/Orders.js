@@ -1,12 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { removeOrder } from "../redux/actions/ordersActions";
+import { getOrders, deleteOrder } from "../redux/actions/ordersActions";
+import "./Orders.css";
+let Orders = (props) => {
+  const { orders, getOrdrs, deleteOrdr } = props;
 
-function Orders() {
-  const orders = useSelector((state) => state.ordersReducer.orders);
-  const dispatch = useDispatch();
+  React.useEffect(() => {
+    getOrdrs();
+  }, []);
 
   if (orders.length === 0) {
     return <h1 className="table-no-orders-color">You have no orders</h1>;
@@ -44,7 +48,7 @@ function Orders() {
                       <button
                         type="button"
                         className="btn-danger"
-                        onClick={() => dispatch(removeOrder(order))}
+                        onClick={() => this.props.deleteOrdr(order._id)}
                       >
                         Delete
                       </button>
@@ -57,6 +61,21 @@ function Orders() {
       </table>
     </div>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    orders: state.ordersReducer.orders,
+  };
 }
 
-export default withRouter(Orders);
+function mapDispatchToProps(dispatch) {
+  return {
+    getOrdrs: bindActionCreators(getOrders, dispatch),
+    deleteOrdr: bindActionCreators(deleteOrder, dispatch),
+  };
+}
+
+Orders = withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));
+
+export default Orders;

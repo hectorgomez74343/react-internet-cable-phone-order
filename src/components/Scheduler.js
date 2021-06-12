@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
 
-import { addOrder } from "../redux/actions/ordersActions";
+import { processOrder } from "../redux/actions/ordersActions";
+import "./Scheduler.css";
 
-function Scheduler(props) {
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [error, setError] = useState(
+let Scheduler = (props) => {
+  const [processing, setProcessing] = React.useState(false);
+  const [address, setAddress] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [error, setError] = React.useState(
     "You need to enter your first name, last name, phone number, address and email to order a suit."
   );
-  const [formError, setFormError] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [formError, setFormError] = React.useState(false);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
   const orderType = useSelector((state) => state.ordersReducer.orderType);
   const { text, image, title, price } = orderType;
-  const { history } = props;
-
-  const dispatch = useDispatch();
+  const { history, createOrder } = props;
 
   const routeToRoot = () => {
     history.push("/");
@@ -35,19 +36,17 @@ function Scheduler(props) {
     ) {
       return setFormError(true);
     }
-    dispatch(
-      addOrder({
-        name,
-        lastName,
-        id: Math.floor(100000 + Math.random() * 900000),
-        time: date.toString(),
-        type: title,
-        phoneNumber,
-        email,
-        address,
-      })
-    );
-    history.push("/confirmation-order");
+    console.log("hello");
+    createOrder({
+      name,
+      lastName,
+      time: date.toString(),
+      type: title,
+      phoneNumber,
+      email,
+      address,
+    });
+    setProcessing(true);
   };
 
   const setValue = (e) => {
@@ -74,6 +73,10 @@ function Scheduler(props) {
       return setError;
     }
   };
+
+  if (processing) {
+    return <h1>...Processing Requesst</h1>;
+  }
 
   return (
     <div>
@@ -139,6 +142,20 @@ function Scheduler(props) {
       </div>
     </div>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    orderType: state.ordersReducer.orderType,
+  };
 }
 
-export default withRouter(Scheduler);
+function mapDispatchToProps(dispatch) {
+  return {
+    createOrder: bindActionCreators(processOrder, dispatch),
+  };
+}
+
+Scheduler = withRouter(connect(mapStateToProps, mapDispatchToProps)(Scheduler));
+
+export default Scheduler;
