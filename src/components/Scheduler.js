@@ -77,10 +77,10 @@ function Scheduler(props) {
 
   return (
     <div>
-      <h2>Order your suit</h2>
+      <h2>Order your service</h2>
       <div className="flexbox-one">
         <button className="btn-danger" type="button" onClick={routeToRoot}>
-          Click to order a different suit
+          Click to go back
         </button>
       </div>
       <div className="flexbox-two">
