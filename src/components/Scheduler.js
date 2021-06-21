@@ -10,7 +10,7 @@ function Scheduler(props) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState(
-    "You need to enter your first name, last name, phone number, address and email to order a suit."
+    "You need to enter your first name, last name, phone number, address and email to order your service."
   );
   const [formError, setFormError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
